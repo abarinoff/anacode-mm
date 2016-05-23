@@ -1,0 +1,9 @@
+{
+  "name": "marketMiner",
+  "dependencies": {
+    "angular-resource": "1.4.6",
+    "jqcloud2": "latest",
+    "angular-jqcloud": "latest",
+    "underscore": "latest"
+  }
+}

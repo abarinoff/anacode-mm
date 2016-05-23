@@ -1,0 +1,16 @@
+{
+  "name": "anacode.de",
+  "description": "Automated Market Research",
+  "version": "0.0.1",
+  "engines": {
+    "node": "4.4.2"
+  },
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "~1.15.0",
+    "cool-ascii-faces": "~1.3.4",
+    "express": "~4.13.4",
+    "method-override": "~2.3.5",
+    "morgan": "~1.7.0"
+  }
+}
