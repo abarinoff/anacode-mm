@@ -14,7 +14,7 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 
 app.get('/', function(req, res) {
-    res.sendfile('tag-cloud.html');
+    res.sendfile('index.html');
 });
 
 app.listen(app.get('port'), function() {
