@@ -1,0 +1,14 @@
+<div ng-controller="SidebarCtrl as sc">
+<nav>
+	<div id="tree" class="tree">
+		<tabset justified="true">
+			<tab heading="{{'SIDEBAR_PRODUCTS' | translate }}">
+				<div js-tree="productsTreeConfig" ng-model="treedata_products" should-apply="false" tree="sc.productsTreeInstance" tree-events="changed:changedProductsCB"></div>
+			</tab>
+			<tab heading="{{'SIDEBAR_FEATURES' | translate }}">
+				<div js-tree="featuresTreeConfig" ng-model="treedata_features" should-apply="false" tree="sc.featuresTreeInstance" tree-events="changed:changedFeaturesCB"></div>
+			</tab>
+		</tabset>
+	</div>
+</nav>
+</div>

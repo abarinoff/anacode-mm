@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{title}}</h3>
+    <div class="pull-right">
+    	<div ng-dropdown-multiselect="" options="modal_items_data" selected-model="modal_items" extra-settings="modal_items_settings" translation-texts="" events="myEvents"></div>
+    </div>
+</div>
+<div class="modal-body">
+	<ol class="text-modal-list">
+    	<li ng-repeat="block in texts">
+    		<span class="text-modal-line"><span ng-repeat="line in block">{{line}}</span></span>
+    	</li>
+    </ol>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">{{'TEXTS_OK' | translate}}</button>
+</div>

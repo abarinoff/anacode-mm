@@ -1,0 +1,147 @@
+<ng-include src="'templates/sidebar_nav.html'"></ng-include>
+<div id="boxplots">
+
+	<tabset justified="true">
+		<tab heading="{{'SUBTYPE_COMPONENTS' | translate}}" ng-click="selection.subtype = 1; updateGraph()"></tab>
+		<tab heading="{{'SUBTYPE_SUBJECTIVE' | translate}}" ng-click="selection.subtype = 2; updateGraph()"></tab>
+		<tab heading="{{'SUBTYPE_PHYSICAL' | translate}}" ng-click="selection.subtype = 3; updateGraph()"></tab>
+	</tabset>
+
+	<div class="graph">
+		<nvd3 ng-hide="showloading" options="plotoptions" data="plotdata" class="with-3d-shadow with-transitions"></nvd3>
+		<div class="graph_buttons">
+			<div ng-repeat="(key, value) in graphmeta" class="graph_button">
+				<div class="btn-group" uib-dropdown>
+					<button id="action{{key}}" type="button" class="btn btn-primary" uib-dropdown-toggle>
+						{{key}} <span class="caret"></span>
+					</button>
+					<ul class="uib-dropdown-menu" role="menu" aria-labelledby="action{{key}}">
+						<li role="menuitem"><a ng-click="switchgraph(value)">{{'GRAPH_MOVEMAIN' | translate}}</a></li>
+						<li role="menuitem"><a ng-click="opentext(value)">{{'GRAPH_TEXTS' | translate}}</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="graph_scrolling">
+		<a class="graph_scroll_left"></a>
+		<a class="graph_scroll_right"></a>
+	</div>
+
+	<div ng-show="showloading" class="load_screen app-content-loading">
+		<i class="fa fa-spinner fa-spin loading-spinner"></i>
+	</div>
+
+
+<script>
+function updateScrollArrows() {
+
+	var el = $('.graph');
+
+	if (el.scrollLeft() > 0) {
+		jQuery('.graph_scroll_left').fadeIn(146);
+	} else {
+		jQuery('.graph_scroll_left').fadeOut(146);
+	}
+
+	if ((el.scrollLeft() + el.width()) < el[0].scrollWidth) {
+		jQuery('.graph_scroll_right').fadeIn(146);
+	} else {
+		jQuery('.graph_scroll_right').fadeOut(146);
+	}
+
+}
+
+function updateGraphLayout() {
+	window.setTimeout(function () {
+
+		// graph might not be ready yet
+		if (jQuery('svg > g > g').length == 0) {
+			return;
+		}
+
+		var graphWidth = parseInt(jQuery('div.graph').width());
+		var boxplotContainerWidth = 200;
+		var leftGraphOffset = ~~(boxplotContainerWidth / 4.23618);
+		var graphPaddingRight = ~~(boxplotContainerWidth / 1.618);
+		var subgraphSpace = ~~(boxplotContainerWidth / 2.618);
+
+		// width of svg container
+		jQuery('svg.nvd3-svg').each(function () {
+			jQuery(this).attr('width', Math.max(graphWidth, graphPaddingRight + boxplotContainerWidth * (jQuery('g.nv-barsWrap g.nv-boxplot').length) + subgraphSpace));
+		});
+
+		// width of horizontal lines
+		jQuery('g.nv-y.nv-axis g.tick line, g.nv-y.nv-axis g.nv-zeroLine line').each(function () {
+			jQuery(this).attr('x2', Math.max(leftGraphOffset + graphWidth - parseInt(jQuery('svg > g > g').attr('transform').slice(10, -4), 10), boxplotContainerWidth * (jQuery('g.nv-barsWrap g.nv-boxplot').length) + subgraphSpace));
+		});
+
+		// horizontal position of boxplots and vertical lines
+		jQuery('g.nv-barsWrap g.nv-boxplot').each(function (index, value) {
+			var boxplotLeft = parseInt(jQuery(this).find('rect').attr('x'));
+			var boxplotWidth = parseInt(jQuery(this).find('rect').attr('width'));
+			if (index == 0) {
+				jQuery('g.nv-x.nv-axis g.tick.zero:nth-child(' + (index + 1) + ')').attr('transform', 'translate(' + (leftGraphOffset + boxplotContainerWidth / 2) + ',0)');
+				jQuery(this).attr('transform', 'translate(' + (leftGraphOffset + (boxplotContainerWidth / 2) - boxplotLeft - (boxplotWidth / 2)) + ',0)');
+			} else {
+				jQuery('g.nv-x.nv-axis g.tick.zero:nth-child(' + (index + 1) + ')').attr('transform', 'translate(' + (leftGraphOffset + boxplotContainerWidth / 2 + (index * boxplotContainerWidth) + subgraphSpace) + ',0)');
+				jQuery(this).attr('transform', 'translate(' + (leftGraphOffset + (boxplotContainerWidth / 2) - boxplotLeft - (boxplotWidth / 2) + (index * boxplotContainerWidth) + subgraphSpace) + ',0)');
+			}
+		});
+
+		// horizontal position of buttons below graph
+		jQuery('g.nv-x.nv-axis g.tick.zero').each(function (index, value) {
+			jQuery('div.graph_button:nth-child(' + (index + 1) + ')')
+				.show()
+				.css({'left': parseInt(jQuery(this).attr('transform').slice(10, -3), 10) + 'px'})
+				.find('button').html(jQuery(this).find('text').text() + '<span class="caret"></span>');
+		});
+
+		updateScrollArrows();
+
+	}, 300);
+}
+
+jQuery(document).ready(function() {
+
+	jQuery(".graph_scroll_left").click(function () {
+		jQuery('.graph').animate({scrollLeft: Math.max(0, jQuery('.graph').scrollLeft() - (jQuery('.graph').width() * 0.618))}, 382);
+	});
+	jQuery(".graph_scroll_right").click(function () {
+		jQuery('.graph').animate({scrollLeft: jQuery('.graph').scrollLeft() + (jQuery('.graph').width() * 0.618)}, 382);
+	});
+
+	jQuery('.graph_scroll_left').fadeOut(146);
+	jQuery('.graph_scroll_right').fadeOut(146);
+
+	jQuery('.graph').on("scroll", function(e) {
+		updateScrollArrows();
+	});
+
+});
+
+var waitForFinalEvent = (function () {
+	var timers = {};
+	return function (callback, ms, uniqueId) {
+		if (!uniqueId) {
+			uniqueId = "Don't call this twice without a uniqueId";
+		}
+		if (timers[uniqueId]) {
+			clearTimeout (timers[uniqueId]);
+		}
+		timers[uniqueId] = setTimeout(callback, ms);
+	};
+})();
+
+$(window).resize(function () {
+	waitForFinalEvent(function(){
+		updateGraphLayout();
+	}, 500, "some unique string");
+});
+
+</script>
+
+
+</div>
+<ng-include src="'templates/footer_nav.html'"></ng-include>

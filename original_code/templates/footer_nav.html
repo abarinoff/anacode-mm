@@ -1,0 +1,24 @@
+<div ng-controller="FooterCtrl">
+<nav>
+	<div id="filters">
+		<div>
+			<div id="filter_usage" class="filter">
+				<label translate="CONTEXT_USAGE"></label>
+				<div ng-dropdown-multiselect="" options="usage_context_data" selected-model="usage_context" extra-settings="usage_context_settings" translation-texts="usage_context_texts"></div>
+			</div>
+			<div id="filter_location" class="filter">
+				<label translate="CONTEXT_LOCATION"></label>
+				<div ng-dropdown-multiselect="" options="location_context_data" selected-model="location_context" extra-settings="location_context_settings" translation-texts="location_context_texts" group-by="frequent"></div>
+			</div>
+			<div id="filter_resource" class="filter">
+				<label translate="CONTEXT_RESOURCES"></label>
+				<div ng-dropdown-multiselect="" options="resource_context_data" selected-model="resource_context" extra-settings="resource_context_settings" translation-texts="resource_context_texts"></div>
+			</div>
+			<div id="filter_update" class="filter">
+				<label>&nbsp;</label>
+				<button ng-click="applyFilters()" translate="CONTEXT_APPLY"></button>
+			</div>
+		</div>
+	</div>
+</nav>
+</div>

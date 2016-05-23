@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="marketminer" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="marketminer" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="marketminer" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="marketminer" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title translate="APP_TITLE"></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.min.css"/>
+  <!-- link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css"/ -->
+  <link rel="stylesheet" href="bower_components/jstree/dist/themes/default/style.min.css">
+</head>
+<body>
+  <header>
+    <div id="topbar">
+      <a href="http://anacode.de" id="logo" target="_blank"><img src="img/logo.png"></a>
+      <a href="javascript:window.print()"><span class="fa fa-print"></span></a>
+    </div>
+  </header>
+  <main>
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+    <div ng-view></div>
+    <div ng-controller="AlertCtrl">
+      <alert ng-repeat="alert in alerts" type="{{alert.type}}" class="alert {{key}}" close="alert.close()">{{ alert.msg }}</alert>
+    </div>
+  </main>
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-translate/angular-translate.min.js"></script>
+  <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.0.js"></script>
+  <script src="bower_components/angularjs-dropdown-multiselect/dist/angularjs-dropdown-multiselect.min.js"></script>
+  <script src="bower_components/lodash/dist/lodash.min.js"></script>
+  <script src="bower_components/d3/d3.min.js"></script>
+  <script src="bower_components/nvd3/build/nv.d3.min.js"></script>
+  <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+  <script src="bower_components/jstree/dist/jstree.min.js"/></script>
+  <script src="bower_components/ng-js-tree/dist/ngJsTree.min.js"/></script>
+
+  <script src="app.js"></script>
+  <script src="views/boxplotview.js"></script>
+  <script src="components/jsonModule.js"></script>
+  <script src="components/alertModule.js"></script>
+  <script src="components/nvd3-anacodeboxplot.js"></script>
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
+  
+</body>
+</html>
