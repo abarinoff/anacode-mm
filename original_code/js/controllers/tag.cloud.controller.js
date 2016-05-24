@@ -33,7 +33,16 @@ angular.module("marketMinerControllers", []).controller("TagCloudController", ["
         };
 
         $scope.drawCloud = function() {
-            var fill = d3.scale.category20();
+            var colors = _.map([
+                "#7fdbff", "#3498db", "#009688", "#15b374", "#4ed3d9",
+                "#f012be", "#e671b8", "#6f51b6", "#3f51b5", "#00417c",
+                "#ffeb3b", "#ffc107", "#ea5d2d", "#f44336", "#85144b",
+                "#795548", "#d6cec3", "#c7c7cc", "#607d8b", "#001f3f"
+            ], function(color) {
+                return d3.rgb(color);
+            });
+
+            var fillCustom = d3.scale.ordinal().range(colors);
 
             var layout = d3.layout.cloud()
                 .size([960, 600])
@@ -57,7 +66,7 @@ angular.module("marketMinerControllers", []).controller("TagCloudController", ["
                     .enter().append("text")
                     .style("font-size", function(d) { return d.size + "px"; })
                     .style("font-family", "Impact")
-                    .style("fill", function(d, i) { return fill(i); })
+                    .style("fill", function(d, i) { return fillCustom(i); })
                     .attr("text-anchor", "middle")
                     .attr("transform", function(d) {
                         return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
